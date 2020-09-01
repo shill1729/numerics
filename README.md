@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-A work in progress package that provides some basic and some advance numerical methods, algorithms, and analysis capabilities.
+A work in progress package that provides various numerical methods in integration, differentiation, solving ODEs and PDEs, root-finding, optimization, etc.
 
 ## Installation
 
@@ -16,7 +16,7 @@ devtools::install_github("shill1729/numerics")
 
 ## Examples
 
-Monte-Carlo integration:
+1. Monte-Carlo integration of definite intervals over bounded regions in one dimension:
 
 ``` r
 library(numerics)
