@@ -54,3 +54,52 @@ monte_carlo_integrator <- function(g, a = 0, b = 1, naive = FALSE, n = 10^6, sig
   results <- data.frame(estimate = x, lb = lb, ub = ub, std_error = err)
   return(results)
 }
+
+#' Multi-dimensional integration via Monte-Carlo methods
+#'
+#' @param g the known integrand, a function of a vector defined over a 'rectangular' region
+#' @param lbs the left-end points of each interval per coordinate
+#' @param ubs the right end-points of each interval per coordinate
+#' @param n the number of variates to simulate of the IID uniform vector
+#' @param sig_lvl the significance level for the confidence intervals
+#' @param ... additional arguments to pass to the function \code{g}
+#'
+#' @description {A naive but efficient estimator for multi-dimensional integrals
+#' via Monte-Carlo methods. The integrand must take a vector as an argument.}
+#' @return data.frame containing
+#' \itemize{
+#' \item \code{estimate} the point estimate of the integral,
+#' \item \code{lb} the lower bound of the confidence interval,
+#' \item \code{ub} the upper bound of the confidence interval,
+#' \item \code{std_error} the standard error of the point-estimate. }
+#' @export multidim_integrator
+multidim_integrator <- function(g, lbs, ubs, n = 10^4, sig_lvl = 0.05, ...)
+{
+  # Dimensions come from intervals.
+  N <- length(lbs)
+  # Simulate n variates of vectors of IID uniform of dimension N
+  u <- matrix(0, nrow = n, ncol = N)
+  for(i in 1:n)
+  {
+    u[i, ] <- stats::runif(N, min = lbs, max = ubs)
+  }
+  # For each dimension, transform u_i to b_i+a_i-u_i
+  transformed_u <- t(apply(u, 1, function(x) ubs+lbs-x))
+  # Compute g(u)
+  gs <- apply(u, 1, function(x) g(x, ...))
+  # Compute g(a+b-u)
+  g_shifted <- apply(transformed_u, 1, function(x) g(x, ...))
+  # Take the average of the two test statistics
+  X <- 0.5*(gs+g_shifted)
+  # Take the sample mean over the number of variates and multiply by measure of the region.
+  estimate <- mean(X)*prod(ubs-lbs)
+  # Sample mean is approximately normally distributed via CLT for large samples
+  z_alpha <- stats::qnorm(1-sig_lvl/2)
+  err <- stats::sd(X) * prod(ubs - lbs) / sqrt(n)
+  lb <- estimate - z_alpha * err
+  ub <- estimate + z_alpha * err
+  # Gather results into data-frame
+  results <- data.frame(estimate = estimate, lb = lb, ub = ub, std_error = err)
+  return(results)
+
+}
