@@ -31,3 +31,37 @@ data.frame containing
 {A naive but efficient estimator for multi-dimensional integrals
 via Monte-Carlo methods. The integrand must take a vector as an argument.}
 }
+\examples{
+# A simple example: integrating f(x,y,z)=xyz over [0,1]^3; exact value 1/8
+multidim_integrator(function(x) x[1]*x[2]*x[3], lbs = c(0, 0, 0), ubs = c(1, 1, 1))
+
+# More involved example: approximating E(log(1+w dot R))
+# where R is the vector of returns of N assets, w is the vector of weights
+# Lower and upper bounds of returns, assuming Uniform distribution
+lbs <- c(-1, -0.5, -0.25, 0)
+ubs <- c(2, 0.5, 1, 1.5)
+w <- c(0.1, 0.1, 0.1, 0.7)
+N <- length(lbs) # Number of assets
+# Mean's of returns from uniform model
+mu <- 0.5*(ubs+lbs)
+# Quadratic approximation requires the matrix E(R_iR_j) for all assets i,j
+B <- matrix(0, N, N)
+for(i in 1:N)
+{
+  for(j in 1:N)
+  {
+    B[i, j] <- mu[i]*mu[j]
+  }
+}
+# Quadratic approximation to the expectation:
+quad_approx <- as.numeric(t(mu)\%*\%w-0.5*t(w)\%*\%B\%*\%w)
+# Function of a vector to pass to the integrator
+g <- function(x, w)
+{
+  log(1+w\%*\%x)
+}
+# Since we want to approximate the expectation, we divided by the measure
+# of the region we are integrating over.
+multidim_integrator(g, lbs, ubs, w = w)/prod(ubs-lbs)
+quad_approx
+}
