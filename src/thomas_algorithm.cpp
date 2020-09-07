@@ -26,7 +26,7 @@ NumericVector thomas_algorithm(NumericVector a, NumericVector b, NumericVector c
   // Forward sweep for c vector
   for (int i = 1; i < n - 1; ++i)
   {
-    cc[i] = c[i] / (b[i] - a[i] * cc[i - 1]);
+    cc[i] = c[i] / (b[i] - a[i - 1] * cc[i - 1]);
   }
   // Repeating nearly the same for d
   dd[0] = d[0] / b[0];
