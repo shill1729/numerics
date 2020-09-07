@@ -2,3 +2,6 @@
 
 export(monte_carlo_integrator)
 export(multidim_integrator)
+export(thomas_algorithm)
+importFrom(Rcpp,sourceCpp)
+useDynLib(numerics, .registration = TRUE)
