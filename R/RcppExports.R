@@ -16,3 +16,16 @@ thomas_algorithm <- function(a, b, c, d) {
     .Call(`_numerics_thomas_algorithm`, a, b, c, d)
 }
 
+#' Newton-Raphson algorithm for solving optimal log utiltiy under uniform distributions
+#'
+#' @param interval the interval for the uniform distribution
+#' @param rate the risk-neutral rate
+#' @param n the number of iterations to take in the NR method.
+#'
+#' @description {For finding the root of the function \eqn{h(x)=\log((1+bx)/(1+ax))/(b-a)-x}.}
+#' @details {The algorithm is on wikipedia and quite straightforward.}
+#' @export uniform_log_util
+uniform_log_util <- function(interval, rate = 0.0, n = 500L) {
+    .Call(`_numerics_uniform_log_util`, interval, rate, n)
+}
+

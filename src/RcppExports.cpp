@@ -19,9 +19,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// uniform_log_util
+double uniform_log_util(std::vector<double> interval, double rate, unsigned int n);
+RcppExport SEXP _numerics_uniform_log_util(SEXP intervalSEXP, SEXP rateSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<double> >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< double >::type rate(rateSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(uniform_log_util(interval, rate, n));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_numerics_thomas_algorithm", (DL_FUNC) &_numerics_thomas_algorithm, 4},
+    {"_numerics_uniform_log_util", (DL_FUNC) &_numerics_uniform_log_util, 3},
     {NULL, NULL, 0}
 };
 
