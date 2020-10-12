@@ -11,7 +11,7 @@
 rgmm <- function(n, p, mus, sigmas)
 {
   modelName <- "V"
-  parameters <- list(pro = p, mean = mus, variance = list(sigmasq = sigmas))
+  parameters <- list(pro = p, mean = mus, variance = list(sigmasq = sigmas^2))
   mclust::sim(modelName, parameters, n = n)[,2]
 }
 
