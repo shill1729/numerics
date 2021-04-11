@@ -5,8 +5,8 @@ Version: 0.1.0
 Author: S. Hill
 Maintainer: S. Hill <52792611+shill1729@users.noreply.github.com>
 Description: A handful of numerical methods implemented in R and C++.
-    Basic examples include: numerical integration, differentiation,
-    ODE and PDE solvers, root-finders, etc.
+    Examples include integration via Monte-Carlo methods, tri-diagonal
+    system solvers, and root finding for log-utility for uniform RVs.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -14,6 +14,4 @@ RoxygenNote: 7.1.1
 LinkingTo: 
     Rcpp
 Imports:
-    libstableR,
-    mclust,
     Rcpp
